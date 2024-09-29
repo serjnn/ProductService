@@ -1,15 +1,11 @@
 
 spring:
-  datasource:
+  r2dbc:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ProductService
+    url: r2dbc:postgresql://localhost:5432/ProductService
     username: postgres
     password: Vaifery111
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
   application:
     name: product
 

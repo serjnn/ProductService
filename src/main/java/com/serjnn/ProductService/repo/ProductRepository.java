@@ -2,13 +2,12 @@ package com.serjnn.ProductService.repo;
 
 import com.serjnn.ProductService.enums.Category;
 import com.serjnn.ProductService.models.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Flux;
 
-import java.util.List;
+public interface ProductRepository extends ReactiveCrudRepository<Product, Long> {
+    Flux<Product> findProductsByCategory(Category category);
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findProductsByCategory(Category category);
-
-    List<Product> findAllById(Iterable<Long> ids);
+    Flux<Product> findAllById(Iterable<Long> ids);
 
 }

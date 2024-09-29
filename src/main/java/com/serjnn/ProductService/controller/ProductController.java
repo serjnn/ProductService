@@ -7,7 +7,7 @@ import com.serjnn.ProductService.models.Product;
 import com.serjnn.ProductService.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -19,12 +19,12 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    Mono<List<Product>> all() {
+    Flux<Product> all() {
         return productService.findAll();
     }
 
     @PostMapping("/by-ids")
-    public Mono<List<Product>> getProductsByIds(@RequestBody IdsRequest idsRequest) {
+    public Flux<Product> getProductsByIds(@RequestBody IdsRequest idsRequest) {
         List<Long> ids = idsRequest.getIds();
         return productService.findProductsByIds(ids);
     }
@@ -37,7 +37,7 @@ public class ProductController {
 
 
     @GetMapping("/{cat}")
-    public Mono<List<Product>> bucket(@PathVariable("cat") Category category) {
+    public Flux<Product> bucket(@PathVariable("cat") Category category) {
         return productService.findProductsByCategory(category);
 
 
