@@ -1,36 +1,27 @@
 package com.serjnn.ProductService.services;
 
 import com.serjnn.ProductService.dtos.DiscountDto;
+import com.serjnn.ProductService.dtos.IdsRequest;
 import com.serjnn.ProductService.enums.Category;
 import com.serjnn.ProductService.models.Product;
 import com.serjnn.ProductService.repo.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Service
-
+@RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final WebClient.Builder webClientBuilder;
 
-
-    public ProductService(ProductRepository productRepository, WebClient.Builder webClientBuilder
-    ) {
-        this.productRepository = productRepository;
-        this.webClientBuilder = webClientBuilder;
-
-    }
-
     public Flux<Product> findProductsByCategory(Category category) {
         Flux<Product> products = productRepository.findProductsByCategory(category);
         return countDiscount(products);
-    }
-
-    public void save(Product product) {
-        productRepository.save(product);
     }
 
     public Flux<Product> findAll() {
@@ -38,17 +29,16 @@ public class ProductService {
         return countDiscount(products);
     }
 
-
-    public Flux<Product> findProductsByIds(List<Long> ids) {
+    public Flux<Product> findProductsByIds(IdsRequest idsRequest) {
+        List<Long> ids = idsRequest.getIds();
         Flux<Product> products = productRepository.findAllById(ids);
         return countDiscount(products);
     }
 
-
     private Flux<Product> countDiscount(Flux<Product> products) {
         return webClientBuilder.build()
                 .get()
-                .uri("lb://discount/api/v1")
+                .uri("lb://discount/api/v1/all")
                 .retrieve()
                 .bodyToFlux(DiscountDto.class)
                 .collectMap(DiscountDto::getProductId, DiscountDto::getDiscount)
@@ -63,5 +53,8 @@ public class ProductService {
                 );
     }
 
+    public Mono<Void> add(Product product) {
+        return productRepository.save(product).then();
 
+    }
 }

@@ -8,8 +8,7 @@ import com.serjnn.ProductService.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,28 +17,24 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping
+    @GetMapping("/all")
     Flux<Product> all() {
         return productService.findAll();
     }
 
-    @PostMapping("/by-ids")
-    public Flux<Product> getProductsByIds(@RequestBody IdsRequest idsRequest) {
-        List<Long> ids = idsRequest.getIds();
-        return productService.findProductsByIds(ids);
+    @PostMapping("/all/by-ids")
+    Flux<Product> getProductsByIds(@RequestBody IdsRequest idsRequest) {
+        return productService.findProductsByIds(idsRequest);
+    }
+
+    @GetMapping("/by-cat/{cat}")
+    Flux<Product> bucket(@PathVariable("cat") Category category) {
+        return productService.findProductsByCategory(category);
     }
 
     @PostMapping("/add")
-    void add(@RequestBody Product product) {
-        productService.save(product);
-
-    }
-
-
-    @GetMapping("/{cat}")
-    public Flux<Product> bucket(@PathVariable("cat") Category category) {
-        return productService.findProductsByCategory(category);
-
+    Mono<Void> addProduct(@RequestBody Product product) {
+        return productService.add(product);
 
     }
 
