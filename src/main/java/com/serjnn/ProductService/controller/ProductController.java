@@ -1,6 +1,7 @@
 package com.serjnn.ProductService.controller;
 
 
+import com.serjnn.ProductService.dtos.DiscountDto;
 import com.serjnn.ProductService.dtos.IdsRequest;
 import com.serjnn.ProductService.enums.Category;
 import com.serjnn.ProductService.models.Product;
@@ -36,6 +37,12 @@ public class ProductController {
     Mono<Void> addProduct(@RequestBody Product product) {
         return productService.add(product);
 
+    }
+
+    @PostMapping("/newDiscount")
+    Mono<Void> newDiscount(@RequestBody DiscountDto discountDto){
+        System.out.println(discountDto);
+        return Mono.empty();
     }
 
 

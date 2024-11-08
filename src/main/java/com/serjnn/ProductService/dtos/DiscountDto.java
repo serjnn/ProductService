@@ -1,10 +1,13 @@
 package com.serjnn.ProductService.dtos;
 
 
-import lombok.Getter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
-public class DiscountDto {
+@ToString
+public class DiscountDto implements Serializable {
     private Long productId;
     private Double discount;
 }
