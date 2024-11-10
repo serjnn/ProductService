@@ -13,13 +13,13 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table(name = "product")
 public class Product {
     @Id
-    private long id;
+    private Long id;
 
     private String name;
 
     private String description;
 
-    private int price;
+    private Integer price; //TODO make this big decimal
 
     private Category category;
 

@@ -4,7 +4,9 @@ import com.serjnn.ProductService.dtos.DiscountDto;
 import com.serjnn.ProductService.dtos.IdsRequest;
 import com.serjnn.ProductService.enums.Category;
 import com.serjnn.ProductService.models.Product;
+import com.serjnn.ProductService.models.Subscriber;
 import com.serjnn.ProductService.repo.ProductRepository;
+import com.serjnn.ProductService.repo.SubscribersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,6 +20,8 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final WebClient.Builder webClientBuilder;
+
+    private final SubscribersRepository subscribersRepository;
 
     public Flux<Product> findProductsByCategory(Category category) {
         Flux<Product> products = productRepository.findProductsByCategory(category);
@@ -55,6 +59,15 @@ public class ProductService {
 
     public Mono<Void> add(Product product) {
         return productRepository.save(product).then();
+
+    }
+
+    public Mono<Void> subscribe(Long clientId, Long productId) {
+        return subscribersRepository.save(new Subscriber(productId, clientId)).then();
+    }
+
+    public Flux<Long> some(Long productId) {
+        return subscribersRepository.findClientIdsByProductId(productId);
 
     }
 }

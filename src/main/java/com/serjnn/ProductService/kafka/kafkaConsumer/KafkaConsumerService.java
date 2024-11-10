@@ -1,7 +1,7 @@
 package com.serjnn.ProductService.kafka.kafkaConsumer;
 
 
-import com.serjnn.ProductService.SubscribersNotifier;
+import com.serjnn.ProductService.services.SubscribersNotifier;
 import com.serjnn.ProductService.dtos.DiscountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;

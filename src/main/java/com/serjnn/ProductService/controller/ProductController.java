@@ -45,5 +45,15 @@ public class ProductController {
         return Mono.empty();
     }
 
+    @GetMapping("/subscribe/{clientId}/{productId}")
+    Mono<Void> subscribe(@PathVariable("clientId") Long clientId, @PathVariable("productId") Long productId) {
+        return productService.subscribe(clientId,productId);
+    }
+
+    @GetMapping("/some/{productId}")
+    Flux<Long> some(@PathVariable("productId") Long productId) {
+        return productService.some(productId);
+    }
+
 
 }
