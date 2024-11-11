@@ -1,6 +1,7 @@
 package com.serjnn.ProductService.controller;
 
 
+import com.serjnn.ProductService.dtos.DiscountDto;
 import com.serjnn.ProductService.dtos.IdsRequest;
 import com.serjnn.ProductService.enums.Category;
 import com.serjnn.ProductService.models.Product;
@@ -36,6 +37,22 @@ public class ProductController {
     Mono<Void> addProduct(@RequestBody Product product) {
         return productService.add(product);
 
+    }
+
+    @PostMapping("/newDiscount")
+    Mono<Void> newDiscount(@RequestBody DiscountDto discountDto){
+        System.out.println(discountDto);
+        return Mono.empty();
+    }
+
+    @GetMapping("/subscribe/{clientId}/{productId}")
+    Mono<Void> subscribe(@PathVariable("clientId") Long clientId, @PathVariable("productId") Long productId) {
+        return productService.subscribe(clientId,productId);
+    }
+
+    @GetMapping("/some/{productId}")
+    Flux<Long> some(@PathVariable("productId") Long productId) {
+        return productService.some(productId);
     }
 
 

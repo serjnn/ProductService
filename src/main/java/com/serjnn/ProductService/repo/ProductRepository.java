@@ -10,4 +10,6 @@ public interface ProductRepository extends ReactiveCrudRepository<Product, Long>
 
     Flux<Product> findAllById(Iterable<Long> ids);
 
+
+
 }
