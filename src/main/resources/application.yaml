@@ -1,7 +1,7 @@
 
 spring:
   kafka:
-    bootstrap-servers: 127.0.0.1:9092
+    bootstrap-servers: 127.0.0.1:29092
   r2dbc:
     driver-class-name: org.postgresql.Driver
     url: r2dbc:postgresql://localhost:5432/ProductService

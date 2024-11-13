@@ -1,7 +1,7 @@
 package com.serjnn.ProductService.kafka.kafkaProducer;
 
 
-import com.serjnn.ProductService.dtos.DiscountSubscriberDto;
+import com.serjnn.ProductService.dtos.DiscountNotification;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -32,7 +32,7 @@ public class KafkaProducerConfiguration {
     private String bootstrapServers;
 
     @Bean
-    public ProducerFactory<String, DiscountSubscriberDto> producerFactory() {
+    public ProducerFactory<String, DiscountNotification> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -42,7 +42,7 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, DiscountSubscriberDto> kafkaTemplate() {
+    public KafkaTemplate<String, DiscountNotification> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
