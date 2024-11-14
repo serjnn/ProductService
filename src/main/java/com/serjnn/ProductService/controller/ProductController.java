@@ -39,21 +39,12 @@ public class ProductController {
 
     }
 
-    @PostMapping("/newDiscount")
-    Mono<Void> newDiscount(@RequestBody DiscountDto discountDto){
-        System.out.println(discountDto);
-        return Mono.empty();
-    }
-
     @GetMapping("/subscribe/{clientId}/{productId}")
     Mono<Void> subscribe(@PathVariable("clientId") Long clientId, @PathVariable("productId") Long productId) {
         return productService.subscribe(clientId,productId);
     }
 
-    @GetMapping("/some/{productId}")
-    Flux<Long> some(@PathVariable("productId") Long productId) {
-        return productService.some(productId);
-    }
+
 
 
 }

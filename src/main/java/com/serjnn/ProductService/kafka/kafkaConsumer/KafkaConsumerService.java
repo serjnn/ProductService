@@ -13,8 +13,9 @@ public class KafkaConsumerService {
 
     private final SubscribersNotifier subscribersNotifier;
 
-    @KafkaListener(topics = "newDiscountTopic", groupId = "first_group_id")
+    @KafkaListener(topics = "newDiscountTopic", groupId = "first_product_group")
     public void newDiscountsListener(DiscountDto discountDto) {
+        System.out.println(discountDto);
         subscribersNotifier.notifySubscribers(discountDto);
 
     }

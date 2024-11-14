@@ -66,8 +66,5 @@ public class ProductService {
         return subscribersRepository.save(new Subscriber(productId, clientId)).then();
     }
 
-    public Flux<Long> some(Long productId) {
-        return subscribersRepository.findClientIdsByProductId(productId);
 
-    }
 }
