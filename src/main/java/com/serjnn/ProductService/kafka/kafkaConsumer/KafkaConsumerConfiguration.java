@@ -1,7 +1,7 @@
 package com.serjnn.ProductService.kafka.kafkaConsumer;
 
 
-import com.serjnn.ProductService.dtos.DiscountDto;
+import com.serjnn.ProductService.dtos.DiscountChangesDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class KafkaConsumerConfiguration {
     private String bootstrapServers;
 
     @Bean
-    public ConsumerFactory<String, DiscountDto> consumerFactory() {
+    public ConsumerFactory<String, DiscountChangesDto> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -32,17 +32,17 @@ public class KafkaConsumerConfiguration {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.serjnn.ProductService.dtos.DiscountDto");
+        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.serjnn.ProductService.dtos.DiscountChangesDto");
         props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
-                new JsonDeserializer<>(DiscountDto.class));
+                new JsonDeserializer<>(DiscountChangesDto.class));
 
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, DiscountDto> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, DiscountDto> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, DiscountChangesDto> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, DiscountChangesDto> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

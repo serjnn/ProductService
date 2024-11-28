@@ -1,7 +1,7 @@
 package com.serjnn.ProductService.controller;
 
 
-import com.serjnn.ProductService.dtos.DiscountDto;
+import com.serjnn.ProductService.dtos.CacheableDiscountDto;
 import com.serjnn.ProductService.dtos.IdsRequest;
 import com.serjnn.ProductService.enums.Category;
 import com.serjnn.ProductService.models.Product;
@@ -42,6 +42,11 @@ public class ProductController {
     @GetMapping("/subscribe/{clientId}/{productId}")
     Mono<Void> subscribe(@PathVariable("clientId") Long clientId, @PathVariable("productId") Long productId) {
         return productService.subscribe(clientId,productId);
+    }
+
+    @GetMapping("/cost/{productId}")
+    Mono<CacheableDiscountDto> cost(@PathVariable("productId") Long productId){
+        return productService.getDiscountByAnyCost(productId);
     }
 
 

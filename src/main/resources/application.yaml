@@ -4,15 +4,31 @@ spring:
     bootstrap-servers: 127.0.0.1:29092
   r2dbc:
     driver-class-name: org.postgresql.Driver
-    url: r2dbc:postgresql://localhost:5432/ProductService
+    url: r2dbc:postgresql://localhost:5432/product
     username: postgres
     password: Vaifery111
 
   application:
     name: product
 
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+
+
 server:
   port: 7002
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          reactive:
+            function:
+              client: DEBUG
 
 
 
