@@ -16,8 +16,6 @@ public class SubscribersNotifier {
 
     public void notifySubscribers(DiscountChangesDto discountChangesDto) {
         Long productId = discountChangesDto.getProductId();
-
-        System.out.println(discountChangesDto);
         subscribersRepository.findClientIdsByProductId(productId)
                 .map(clientId ->
                         new DiscountNotification(discountChangesDto.getProductId(),

@@ -8,9 +8,9 @@ import reactor.core.publisher.Flux;
 
 public interface ProductRepository extends ReactiveCrudRepository<Product, Long> {
     Flux<Product> findProductsByCategory(Category category);
-@NonNull
-    Flux<Product> findAllById(@NonNull Iterable<Long> ids);
 
+    @NonNull
+    Flux<Product> findAllById(@NonNull Iterable<Long> ids);
 
 
 }

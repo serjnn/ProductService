@@ -17,8 +17,5 @@ public class DiscountChangesDto implements Serializable {
     private Double newDiscount;
     private Double prevDiscount;
 
-    public DiscountChangesDto(Long productId, Double newDiscount) {
-        this.productId = productId;
-        this.newDiscount = newDiscount;
-    }
+
 }
