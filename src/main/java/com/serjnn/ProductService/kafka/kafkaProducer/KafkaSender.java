@@ -11,7 +11,6 @@ public class KafkaSender {
     private final KafkaTemplate<String, DiscountNotification> kafkaTemplate;
 
     public void sendDiscountNotification(String topicName, DiscountNotification discountNotification) {
-        System.out.println("this " +  discountNotification);
         kafkaTemplate.send(topicName, discountNotification);
 
 

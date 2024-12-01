@@ -9,6 +9,7 @@ import com.serjnn.ProductService.redis.DiscountCacheManager;
 import com.serjnn.ProductService.repo.ProductRepository;
 import com.serjnn.ProductService.repo.SubscribersRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
     private final ProductRepository productRepository;
     private final WebClient.Builder webClientBuilder;
@@ -33,7 +35,6 @@ public class ProductService {
 
     public Flux<Product> findAll() {
         Flux<Product> products = productRepository.findAll();
-        System.out.println(products);
         return countDiscount(products);
     }
 
@@ -48,16 +49,16 @@ public class ProductService {
                 getDiscountByAnyCost(product.getId())
                         .map(cacheableDiscountDto -> {
                             BigDecimal discount = BigDecimal.valueOf(cacheableDiscountDto.getDiscount());
-                            // Calculate the new price: price * (1 - discount / 100)
+
                             BigDecimal newPrice = product.getPrice()
                                     .multiply(
                                             BigDecimal.ONE.subtract(
                                                     discount.divide(BigDecimal.valueOf(100))))
                                     .setScale(2, RoundingMode.HALF_UP) ;
                             product.setPrice(newPrice);
-                            return product; // Return the updated product
+                            return product;
                         })
-                        .switchIfEmpty(Mono.just(product)) // If no discount, return the product as-is
+                        .switchIfEmpty(Mono.just(product))
         );
     }
 
@@ -68,10 +69,16 @@ public class ProductService {
                         askDiscountService(id)
                                 .flatMap(cacheableDiscountDto -> {
                                     discountCacheManager.addToCache(cacheableDiscountDto);
-                                    System.out.println("ASKING DISCOUNT SERVICE");
                                     return Mono.just(cacheableDiscountDto);
                                 })
-                                .switchIfEmpty(Mono.empty())
+                                .switchIfEmpty(Mono.defer(() -> {
+                                            discountCacheManager.addToCache(
+                                                    new CacheableDiscountDto(id,0.0)
+                                            );
+
+                                            return Mono.empty();
+                                        }
+                                ))
                 );
     }
 
@@ -84,7 +91,7 @@ public class ProductService {
                 .retrieve()
                 .bodyToMono(CacheableDiscountDto.class)
                 .doOnError(e -> {
-                    System.err.println("Error while fetching discount for product " + productId + ": " + e.getMessage());
+                    log.info("Error while fetching discount for product " + productId + ": " + e.getMessage());
                 });
     }
 
