@@ -91,7 +91,7 @@ public class ProductService {
                 .retrieve()
                 .bodyToMono(CacheableDiscountDto.class)
                 .doOnError(e -> {
-                    log.info("Error while fetching discount for product " + productId + ": " + e.getMessage());
+                    log.warn("Error while fetching discount for product " + productId + ": " + e.getMessage());
                 });
     }
 

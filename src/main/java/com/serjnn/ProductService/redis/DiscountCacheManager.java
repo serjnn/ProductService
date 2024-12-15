@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serjnn.ProductService.dtos.CacheableDiscountDto;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DiscountCacheManager {
@@ -19,6 +21,8 @@ public class DiscountCacheManager {
 
 
     public void addToCache(CacheableDiscountDto cacheableDiscountDto) {
+        log.info("adding to cache " + cacheableDiscountDto);
+
         redisOperations
                 .opsForHash()
                 .put(DISCOUNTS_HASH_KEY, String.valueOf(cacheableDiscountDto.getProductId())
