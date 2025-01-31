@@ -23,7 +23,7 @@ public class Product {
 
     private String description;
 
-    private BigDecimal price; //TODO make this big decimal
+    private BigDecimal price;
 
     private Category category;
 
